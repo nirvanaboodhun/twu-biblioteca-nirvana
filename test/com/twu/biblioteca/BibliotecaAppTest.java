@@ -32,11 +32,22 @@ public class BibliotecaAppTest {
 
     @Test
     public void testListOfBooksPrinted() {
-        biblioteca.books.add(new Book("Harry Potter and the Chamber of Secrets"));
-        biblioteca.books.add(new Book("1984"));
+        biblioteca.books.add(new Book("Harry Potter and the Chamber of Secrets", "JK Rowling",
+                "1998"));
+        biblioteca.books.add(new Book("1984", "George Orwell", "1949"));
 
         biblioteca.main(new String[]{});
         assertThat(byteArrayOutputStream.toString(), allOf(containsString("Harry Potter and the Chamber of Secrets"), containsString("1984")));
+    }
+
+    @Test
+    public void testListOfBooksWithAuthorAndYearPublishedPrinted() {
+        biblioteca.books.add(new Book("Harry Potter and the Chamber of Secrets", "JK Rowling",
+                "1998"));
+        biblioteca.books.add(new Book("1984", "George Orwell", "1949"));
+
+        biblioteca.main(new String[]{});
+        assertThat(byteArrayOutputStream.toString(), allOf(containsString("Harry Potter and the Chamber of Secrets || JK Rowling || 1998"), containsString("1984 || George Orwell || 1949")));
     }
 }
 

@@ -8,8 +8,9 @@ public class BibliotecaApp {
     public static void main(String[] args) {
         System.out.println("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!");
 
-        books.add(new Book("Harry Potter and the Chamber of Secrets"));
-        books.add(new Book("1984"));
+        books.add(new Book("Harry Potter and the Chamber of Secrets", "JK Rowling",
+                "1998"));
+        books.add(new Book("1984", "George Orwell", "1949"));
 
         for (Book book : books) {
             System.out.println(book.toString());
