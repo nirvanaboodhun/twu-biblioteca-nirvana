@@ -29,5 +29,14 @@ public class BibliotecaAppTest {
         biblioteca.main(new String[]{});
         assertThat(byteArrayOutputStream.toString(), containsString("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!") );
     }
+
+    @Test
+    public void testListOfBooksPrinted() {
+        biblioteca.books.add(new Book("Harry Potter and the Chamber of Secrets"));
+        biblioteca.books.add(new Book("1984"));
+
+        biblioteca.main(new String[]{});
+        assertThat(byteArrayOutputStream.toString(), allOf(containsString("Harry Potter and the Chamber of Secrets"), containsString("1984")));
+    }
 }
 
