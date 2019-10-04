@@ -23,6 +23,14 @@ public class BibliotecaAppTest {
         console = System.out;
         System.setOut(new PrintStream(byteArrayOutputStream));
         biblioteca = new BibliotecaApp();
+
+
+        biblioteca.books.add(new Book("Harry Potter and the Chamber of Secrets", "JK Rowling",
+                "1998"));
+        biblioteca.books.add(new Book("1984", "George Orwell", "1949"));
+
+        biblioteca.menu.add("1.List of Books");
+        biblioteca.menu.add("2.Checkout a book");
     }
 
 //    @Test
@@ -35,37 +43,24 @@ public class BibliotecaAppTest {
 
     @Test
     public void testListOfBooksPrinted() {
-        biblioteca.books.add(new Book("Harry Potter and the Chamber of Secrets", "JK Rowling",
-                "1998"));
-        biblioteca.books.add(new Book("1984", "George Orwell", "1949"));
-
         biblioteca.displayBooks();
         assertThat(byteArrayOutputStream.toString(), allOf(containsString("Harry Potter and the Chamber of Secrets"), containsString("1984")));
     }
 
     @Test
     public void testListOfBooksWithAuthorAndYearPublishedPrinted() {
-        biblioteca.books.add(new Book("Harry Potter and the Chamber of Secrets", "JK Rowling",
-                "1998"));
-        biblioteca.books.add(new Book("1984", "George Orwell", "1949"));
-
         biblioteca.displayBooks();
         assertThat(byteArrayOutputStream.toString(), allOf(containsString("Harry Potter and the Chamber of Secrets || JK Rowling || 1998"), containsString("1984 || George Orwell || 1949")));
     }
 
     @Test
     public void testMenuOptionsPrinted(){
-        biblioteca.menu.add("1. List of Books");
         biblioteca.printMenuOptions();
         assertThat(byteArrayOutputStream.toString(), containsString("List of Books"));
     }
 
     @Test
     public void testListOfBooksMenuOption(){
-        biblioteca.books.add(new Book("Harry Potter and the Chamber of Secrets", "JK Rowling",
-                "1998"));
-        biblioteca.books.add(new Book("1984", "George Orwell", "1949"));
-
         biblioteca.parseInput(1);
         assertThat(byteArrayOutputStream.toString(), allOf(containsString("Harry Potter and the Chamber of Secrets"), containsString("1984")));
     }
@@ -76,5 +71,11 @@ public class BibliotecaAppTest {
         assertThat(byteArrayOutputStream.toString(), containsString("Please select a valid option:"));
     }
 
+    @Test
+    public void testBookCheckOut() {
+        int numOfBooks = biblioteca.books.size();
+        biblioteca.validBookSelected(1);
+        assertThat(biblioteca.books.size(), is(equalTo(numOfBooks-1)));
+    }
 }
 

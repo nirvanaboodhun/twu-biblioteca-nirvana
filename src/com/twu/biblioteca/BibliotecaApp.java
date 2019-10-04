@@ -1,24 +1,24 @@
 package com.twu.biblioteca;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class BibliotecaApp {
     public static ArrayList<Book> books = new ArrayList<Book>();
+    public static ArrayList<Book> checkedOutBooks = new ArrayList<Book>();
     public static ArrayList<String> menu = new ArrayList<String>();
 
     public static void main(String[] args) {
         System.out.println("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!");
 
-        menu.add("0.Exit");
+        menu.add("\n0.Exit");
         menu.add("1.List of Books");
+        menu.add("2.Check out a book");
 
 
         books.add(new Book("Harry Potter and the Chamber of Secrets", "JK Rowling",
                 "1998"));
         books.add(new Book("1984", "George Orwell", "1949"));
-
 
         printMenuOptions();
 
@@ -30,7 +30,8 @@ public class BibliotecaApp {
                 menuOption = input.nextInt();
                 parseInput(menuOption);
             } catch (Exception e) {
-                handleErrors();
+                printErrorMessage();
+                printMenuOptions();
             }
         }
 
@@ -43,24 +44,64 @@ public class BibliotecaApp {
         }
     }
 
-    static void handleErrors() {
+    static void printErrorMessage() {
         System.out.println("Please select a valid option:");
-        printMenuOptions();
     }
 
     static void parseInput(int menuOption) {
-        if (menuOption == 0) {
-            System.exit(0);
-        } else if (menuOption == 1) {
-            displayBooks();
-        } else if (menuOption >= menu.size() || menuOption < 0) {
-            handleErrors();
+        switch (menuOption) {
+            case 0:
+                System.exit(0);
+                break;
+            case 1:
+                displayBooks();
+                break;
+            case 2:
+                checkoutBook();
+                break;
+            default:
+                printErrorMessage();
         }
     }
 
     static void displayBooks() {
+        int i = 0;
         for (Book book : books) {
-            System.out.println(book.toString());
+            System.out.println(i + ": " + book.toString());
+            i++;
         }
+    }
+
+    static void checkoutBook() {
+        displayBooks();
+        System.out.println("\nPlease type in a number to select the book you would like to check out: ");
+
+        boolean bookNotSelected = true;
+
+        while (bookNotSelected) {
+            Scanner input = new Scanner(System.in);
+            int bookOption;
+            try {
+                bookOption = input.nextInt();
+                if (validBookSelected(bookOption)) {
+                    System.out.println("\nThank you! Enjoy the book!");
+                } else {
+                    System.out.println("\nSorry, that book is not available");
+                }
+            } catch (Exception e) {
+                printErrorMessage();
+                displayBooks();
+            }
+        }
+    }
+
+    static boolean validBookSelected(int bookOption) {
+        if (bookOption >= 0 && bookOption < books.size()) {
+            Book selectedBook = books.get(bookOption);
+            books.remove(selectedBook);
+            checkedOutBooks.add(selectedBook);
+
+            return true;
+        } else return false;
     }
 }
