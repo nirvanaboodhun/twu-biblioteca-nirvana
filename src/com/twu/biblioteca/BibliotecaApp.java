@@ -12,8 +12,9 @@ public class BibliotecaApp {
         System.out.println("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!");
 
         menu.add("Exit");
-        menu.add("List of Books");
+        menu.add("List of books");
         menu.add("Check out a book");
+        menu.add("Return a book");
 
         books.add(new Book("Harry Potter and the Chamber of Secrets", "JK Rowling",
                 "1998"));
@@ -44,7 +45,7 @@ public class BibliotecaApp {
         }
     }
 
-    static void printErrorMessage() {
+    private static void printErrorMessage() {
         System.out.println("Please select a valid option:");
     }
 
@@ -54,20 +55,23 @@ public class BibliotecaApp {
                 System.exit(0);
                 break;
             case 1:
-                displayBooks();
+                displayBooks(books);
                 break;
             case 2:
                 checkoutBook();
+                break;
+            case 3:
+                returnBook();
                 break;
             default:
                 printErrorMessage();
         }
     }
 
-    static void displayBooks() {
+    static void displayBooks(ArrayList<Book> books) {
         int i = 0;
         if (books.size() == 0) {
-            System.out.println("Sorry, there are currently no books in the library");
+            System.out.println("Sorry, there are currently no books to choose from");
         } else {
             for (Book book : books) {
                 System.out.println(i + ": " + book.toString());
@@ -77,7 +81,7 @@ public class BibliotecaApp {
     }
 
     static void checkoutBook() {
-        displayBooks();
+        displayBooks(books);
         if (books.size() > 0){
             System.out.println("\nPlease type in a number to select the book you would like to check out: ");
 
@@ -88,7 +92,7 @@ public class BibliotecaApp {
                 int bookOption;
                 try {
                     bookOption = input.nextInt();
-                    if (validBookSelected(bookOption)) {
+                    if (validBookSelected(bookOption, books, checkedOutBooks)) {
                         System.out.println("\nThank you! Enjoy the book!");
                         bookNotSelected = false;
                     } else {
@@ -97,21 +101,47 @@ public class BibliotecaApp {
                     }
                 } catch (Exception e) {
                     printErrorMessage();
-                    displayBooks();
+                    displayBooks(books);
                 }
             }
         }
     }
 
-    // if a valid book is selected, the book is removed from the list of books
-    // and added to the list of checked out books
-    static boolean validBookSelected(int bookOption) {
-        if (bookOption >= 0 && bookOption < books.size()) {
-            Book selectedBook = books.get(bookOption);
-            books.remove(selectedBook);
-            checkedOutBooks.add(selectedBook);
+    static void returnBook() {
+        displayBooks(checkedOutBooks);
+        if (checkedOutBooks.size() > 0) {
+            System.out.println("Please select a number corresponding to the book you would like to return:");
 
+            boolean bookNotSelected = true;
+
+            while (bookNotSelected) {
+                Scanner input = new Scanner(System.in);
+                int bookOption;
+                try {
+                    bookOption = input.nextInt();
+                    if (validBookSelected(bookOption, checkedOutBooks, books)) {
+                        System.out.println("\nThank you for returning the book");
+                        bookNotSelected = false;
+                    } else {
+                        System.out.println("\nThat is not a valid book to return");
+                        bookNotSelected = false;
+                    }
+                } catch (Exception e) {
+                    printErrorMessage();
+                    displayBooks(books);
+                }
+            }
+        }
+    }
+
+    static boolean validBookSelected(int bookOption, ArrayList<Book> listToRemoveFrom,
+                                              ArrayList<Book> listToAddTo) {
+        if (bookOption >= 0 && bookOption < listToRemoveFrom.size()) {
+            Book selectedBook = listToRemoveFrom.get(bookOption);
+            listToRemoveFrom.remove(selectedBook);
+            listToAddTo.add(selectedBook);
             return true;
         } else return false;
     }
+
 }

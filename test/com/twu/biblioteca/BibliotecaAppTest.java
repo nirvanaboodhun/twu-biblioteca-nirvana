@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertFalse;
@@ -15,6 +16,9 @@ public class BibliotecaAppTest {
 
     private static ByteArrayOutputStream byteArrayOutputStream;
     private static BibliotecaApp biblioteca;
+    private static ArrayList<Book> books;
+    private static ArrayList<Book> checkedOutBooks;
+
 
     @BeforeClass
     public static void setUp() {
@@ -22,24 +26,28 @@ public class BibliotecaAppTest {
         System.setOut(new PrintStream(byteArrayOutputStream));
         biblioteca = new BibliotecaApp();
 
-        biblioteca.books.add(new Book("Harry Potter and the Chamber of Secrets", "JK Rowling",
+        books = biblioteca.books;
+        checkedOutBooks = biblioteca.checkedOutBooks;
+        books.add(new Book("Harry Potter and the Chamber of Secrets", "JK Rowling",
                 "1998"));
-        biblioteca.books.add(new Book("1984", "George Orwell", "1949"));
+        books.add(new Book("1984", "George Orwell", "1949"));
 
         biblioteca.menu.add("List of Books");
         biblioteca.menu.add("Checkout a book");
+
+        checkedOutBooks.add(new Book("A Game of Thrones", "GRRM", "1996"));
     }
 
 
     @Test
     public void testListOfBooksPrinted() {
-        biblioteca.displayBooks();
+        biblioteca.displayBooks(books);
         assertThat(byteArrayOutputStream.toString(), allOf(containsString("Harry Potter and the Chamber of Secrets"), containsString("1984")));
     }
 
     @Test
     public void testListOfBooksWithAuthorAndYearPublishedPrinted() {
-        biblioteca.displayBooks();
+        biblioteca.displayBooks(books);
         assertThat(byteArrayOutputStream.toString(), allOf(containsString("Harry Potter and the Chamber of Secrets || JK Rowling || 1998"), containsString("1984 || George Orwell || 1949")));
     }
 
@@ -62,29 +70,30 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void testBookCheckOut() {
-        int numOfBooks = biblioteca.books.size();
-        biblioteca.validBookSelected(0);
-        assertThat(biblioteca.books.size(), is(equalTo(numOfBooks-1)));
+    public void testBookRemoved() {
+        int numOfBooks = books.size();
+        biblioteca.validBookSelected(0, books, checkedOutBooks);
+        assertThat(books.size(), is(equalTo(numOfBooks-1)));
     }
 
     @Test
     public void testNegativeNumberForBookCheckOut() {
-        biblioteca.validBookSelected(-1);
+        biblioteca.validBookSelected(-1, books, checkedOutBooks);
         assertFalse(false);
     }
 
     @Test
     public void testHigherNumberOfBooksForCheckOut() {
-        biblioteca.validBookSelected(biblioteca.books.size()+1);
+        biblioteca.validBookSelected(books.size()+1, books, checkedOutBooks);
         assertFalse(false);
     }
 
     @Test
-    public void testCheckedOutBookAddedToCheckOutList() {
-        int numOfCheckedOutBooks = biblioteca.checkedOutBooks.size();
-        biblioteca.validBookSelected(1);
-        assertThat(biblioteca.books.size(), is(equalTo(numOfCheckedOutBooks+1)));
+    public void testBookAdded() {
+        int numOfCheckedOutBooks = checkedOutBooks.size();
+        biblioteca.validBookSelected(1, books, checkedOutBooks );
+        assertThat(checkedOutBooks.size(), is(equalTo(numOfCheckedOutBooks+1)));
     }
+    
 }
 
