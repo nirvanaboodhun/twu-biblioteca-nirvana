@@ -11,9 +11,9 @@ public class BibliotecaApp {
     public static void main(String[] args) {
         System.out.println("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!");
 
-        menu.add("\n0.Exit");
-        menu.add("1.List of Books");
-        menu.add("2.Check out a book");
+        menu.add("Exit");
+        menu.add("List of Books");
+        menu.add("Check out a book");
 
 
         books.add(new Book("Harry Potter and the Chamber of Secrets", "JK Rowling",
@@ -39,8 +39,10 @@ public class BibliotecaApp {
 
 
     static void printMenuOptions() {
+        int i = 0;
         for (String menuOption : menu){
-            System.out.println(menuOption);
+            System.out.println(i + ": " + menuOption);
+            i++;
         }
     }
 
@@ -85,6 +87,7 @@ public class BibliotecaApp {
                 bookOption = input.nextInt();
                 if (validBookSelected(bookOption)) {
                     System.out.println("\nThank you! Enjoy the book!");
+                    bookNotSelected = false;
                 } else {
                     System.out.println("\nSorry, that book is not available");
                 }
