@@ -8,6 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 
 public class BibliotecaAppTest {
@@ -63,8 +64,27 @@ public class BibliotecaAppTest {
     @Test
     public void testBookCheckOut() {
         int numOfBooks = biblioteca.books.size();
-        biblioteca.validBookSelected(1);
+        biblioteca.validBookSelected(0);
         assertThat(biblioteca.books.size(), is(equalTo(numOfBooks-1)));
+    }
+
+    @Test
+    public void testNegativeNumberForBookCheckOut() {
+        biblioteca.validBookSelected(-1);
+        assertFalse(false);
+    }
+
+    @Test
+    public void testHigherNumberOfBooksForCheckOut() {
+        biblioteca.validBookSelected(biblioteca.books.size()+1);
+        assertFalse(false);
+    }
+
+    @Test
+    public void testCheckedOutBookAddedToCheckOutList() {
+        int numOfCheckedOutBooks = biblioteca.checkedOutBooks.size();
+        biblioteca.validBookSelected(1);
+        assertThat(biblioteca.books.size(), is(equalTo(numOfCheckedOutBooks+1)));
     }
 }
 
