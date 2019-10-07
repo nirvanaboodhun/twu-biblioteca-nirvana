@@ -9,6 +9,7 @@ public class BibliotecaApp {
     public static ArrayList<String> menu = new ArrayList<String>();
 
     public static ArrayList<Item> movies = new ArrayList<Item>();
+    public static ArrayList<Item> checkedOutMovies = new ArrayList<Item>();
 
     public static void main(String[] args) {
         System.out.println("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!");
@@ -18,6 +19,8 @@ public class BibliotecaApp {
         menu.add("Check out a book");
         menu.add("Return a book");
         menu.add("List of movies");
+        menu.add("Check out a movie");
+
 
         books.add(new Book("Harry Potter and the Chamber of Secrets", "JK Rowling",
                 "1998"));
@@ -63,7 +66,7 @@ public class BibliotecaApp {
                 displayItem(books);
                 break;
             case 2:
-                checkoutBook();
+                checkoutItem(books, checkedOutBooks);
                 break;
             case 3:
                 returnBook();
@@ -71,47 +74,11 @@ public class BibliotecaApp {
             case 4:
                 displayItem(movies);
                 break;
+            case 5:
+                checkoutItem(movies, checkedOutMovies);
+                break;
             default:
                 printErrorMessage();
-        }
-    }
-//
-//    static void displayBooks(ArrayList<Book> books) {
-//        int i = 0;
-//        if (books.size() == 0) {
-//            System.out.println("Sorry, there are currently no books to choose from");
-//        } else {
-//            for (Book book : books) {
-//                System.out.println(i + ": " + book.toString());
-//                i++;
-//            }
-//        }
-//    }
-
-    static void checkoutBook() {
-        displayItem(books);
-        if (books.size() > 0){
-            System.out.println("\nPlease type in a number to select the book you would like to check out: ");
-
-            boolean bookNotSelected = true;
-
-            while (bookNotSelected) {
-                Scanner input = new Scanner(System.in);
-                int bookOption;
-                try {
-                    bookOption = input.nextInt();
-                    if (validItemSelected(bookOption, books, checkedOutBooks)) {
-                        System.out.println("\nThank you! Enjoy the book!");
-                        bookNotSelected = false;
-                    } else {
-                        System.out.println("\nSorry, that book is not available");
-                        bookNotSelected = false;
-                    }
-                } catch (Exception e) {
-                    printErrorMessage();
-                    displayItem(books);
-                }
-            }
         }
     }
 
@@ -165,8 +132,31 @@ public class BibliotecaApp {
 
     }
 
-    public void checkoutItem() {
+    public static void checkoutItem(ArrayList<Item> items, ArrayList<Item> checkedOutItems) {
+        displayItem(items);
+        if (items.size() > 0){
+            System.out.println("\nPlease type in a number to select the items you would like to check out: ");
 
+            boolean itemNotSelected = true;
+
+            while (itemNotSelected) {
+                Scanner input = new Scanner(System.in);
+                int itemOption;
+                try {
+                    itemOption = input.nextInt();
+                    if (validItemSelected(itemOption, items, checkedOutItems)) {
+                        System.out.println("\nThank you! Enjoy!");
+                        itemNotSelected = false;
+                    } else {
+                        System.out.println("\nSorry, that item is not available");
+                        itemNotSelected = false;
+                    }
+                } catch (Exception e) {
+                    printErrorMessage();
+                    displayItem(items);
+                }
+            }
+        }
     }
 
     public void returnItem() {
