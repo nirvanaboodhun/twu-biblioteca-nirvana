@@ -102,26 +102,26 @@ public class BibliotecaAppTest {
     @Test
     public void testBookRemoved() {
         int numOfBooks = books.size();
-        BibliotecaApp.validItemSelected(0, books, checkedOutBooks);
+        BibliotecaApp.validItemSelected(0, books, checkedOutBooks, "Book");
         assertThat(books.size(), is(equalTo(numOfBooks-1)));
     }
 
     @Test
     public void testNegativeNumberForItemCheckOut() {
-        BibliotecaApp.validItemSelected(-1, books, checkedOutBooks);
+        BibliotecaApp.validItemSelected(-1, books, checkedOutBooks, "Book");
         assertFalse(false);
     }
 
     @Test
     public void testHigherNumberOfItemsForCheckOut() {
-        BibliotecaApp.validItemSelected(books.size()+1, books, checkedOutBooks);
+        BibliotecaApp.validItemSelected(books.size()+1, books, checkedOutBooks, "Book");
         assertFalse(false);
     }
 
     @Test
     public void testItemAdded() {
         int numOfCheckedOutBooks = checkedOutBooks.size();
-        BibliotecaApp.validItemSelected(1, books, checkedOutBooks );
+        BibliotecaApp.validItemSelected(1, books, checkedOutBooks, "Book");
         assertThat(checkedOutBooks.size(), is(equalTo(numOfCheckedOutBooks+1)));
     }
 
@@ -163,6 +163,7 @@ public class BibliotecaAppTest {
         Boolean passwordCheck = BibliotecaApp.checkPassword(user, "2222");
         assertThat(passwordCheck, is(equalTo(false)));
     }
+    
 
 }
 

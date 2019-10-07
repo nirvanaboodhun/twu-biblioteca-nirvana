@@ -24,6 +24,7 @@ public class BibliotecaApp {
         menu.add("List of movies");
         menu.add("Check out a movie");
         menu.add("Log in");
+        menu.add("View checked out items");
 
         users.add(new User("123-4567", "John Doe", "jd@gmail.com", "12345678", "0000"));
 
@@ -71,19 +72,22 @@ public class BibliotecaApp {
                 displayItem(books);
                 break;
             case 2:
-                checkoutItem(books, checkedOutBooks);
+                checkoutItem(books, checkedOutBooks, "Book");
                 break;
             case 3:
-                returnItem(checkedOutBooks, books);
+                returnItem(checkedOutBooks, books, "Book");
                 break;
             case 4:
                 displayItem(movies);
                 break;
             case 5:
-                checkoutItem(movies, checkedOutMovies);
+                checkoutItem(movies, checkedOutMovies, "Movie");
                 break;
             case 6:
                 logIn();
+                break;
+            case 7:
+                viewCheckedOutItems();
                 break;
             default:
                 printErrorMessage();
@@ -92,9 +96,14 @@ public class BibliotecaApp {
 
 
     static boolean validItemSelected(int itemOption, ArrayList<Item> listToRemoveFrom,
-                                     ArrayList<Item> listToAddTo) {
+                                     ArrayList<Item> listToAddTo, String itemType) {
         if (itemOption >= 0 && itemOption < listToRemoveFrom.size()) {
             Item selectedItem = listToRemoveFrom.get(itemOption);
+            if (itemType.equals("Book")){
+                userLoggedIn.addToCheckedOutBooks(selectedItem);
+            } else{
+                userLoggedIn.addToCheckedOutMovies(selectedItem);
+            }
             listToRemoveFrom.remove(selectedItem);
             listToAddTo.add(selectedItem);
             return true;
@@ -113,55 +122,64 @@ public class BibliotecaApp {
         }
     }
 
-    private static void checkoutItem(ArrayList<Item> items, ArrayList<Item> checkedOutItems) {
-        displayItem(items);
-        if (items.size() > 0){
-            System.out.println("\nPlease type in a number to select the items you would like to check out: ");
+    private static void checkoutItem(ArrayList<Item> items, ArrayList<Item> checkedOutItems, String itemType) {
+        if (userLoggedIn == null) {
+            System.out.println("Please log in before you check out an item");
+        } else {
+            displayItem(items);
+            if (items.size() > 0){
+                System.out.println("\nPlease type in a number to select the items you would like to check out: ");
 
-            boolean itemNotSelected = true;
+                boolean itemNotSelected = true;
 
-            while (itemNotSelected) {
-                Scanner input = new Scanner(System.in);
-                int itemOption;
-                try {
-                    itemOption = input.nextInt();
-                    if (validItemSelected(itemOption, items, checkedOutItems)) {
-                        System.out.println("\nThank you! Enjoy!");
-                        itemNotSelected = false;
-                    } else {
-                        System.out.println("\nSorry, that item is not available");
-                        itemNotSelected = false;
+                while (itemNotSelected) {
+                    Scanner input = new Scanner(System.in);
+                    int itemOption;
+                    try {
+                        itemOption = input.nextInt();
+                        if (validItemSelected(itemOption, items, checkedOutItems, itemType)) {
+                            System.out.println("\nThank you! Enjoy!");
+                            itemNotSelected = false;
+                        } else {
+                            System.out.println("\nSorry, that item is not available");
+                            itemNotSelected = false;
+                        }
+                    } catch (Exception e) {
+                        printErrorMessage();
+                        displayItem(items);
                     }
-                } catch (Exception e) {
-                    printErrorMessage();
-                    displayItem(items);
                 }
             }
         }
+
     }
 
-    private static void returnItem(ArrayList<Item> checkedOutItems, ArrayList<Item> items) {
-        displayItem(checkedOutItems);
-        if (checkedOutItems.size() > 0) {
-            System.out.println("Please select a number corresponding to the book you would like to return:");
+    private static void returnItem(ArrayList<Item> checkedOutItems, ArrayList<Item> items, String itemType) {
+        if (userLoggedIn == null) {
+            System.out.println("Please log in before you check out an item");
+        } else {
+            displayItem(checkedOutItems);
+            if (checkedOutItems.size() > 0) {
+                System.out.println("Please select a number corresponding to the book you would like to return:");
 
-            boolean itemNotSelected = true;
+                boolean itemNotSelected = true;
 
-            while (itemNotSelected) {
-                Scanner input = new Scanner(System.in);
-                int itemOption;
-                try {
-                    itemOption = input.nextInt();
-                    if (validItemSelected(itemOption, checkedOutItems, items)) {
-                        System.out.println("\nThank you for returning the book");
-                        itemNotSelected = false;
-                    } else {
-                        System.out.println("\nThat is not a valid book to return");
-                        itemNotSelected = false;
+                while (itemNotSelected) {
+                    Scanner input = new Scanner(System.in);
+                    int itemOption;
+                    try {
+                        itemOption = input.nextInt();
+                        if (validItemSelected(itemOption, checkedOutItems, items, itemType)) {
+                            System.out.println("\nThank you for returning the book");
+                            itemNotSelected = false;
+                        } else {
+                            System.out.println("\nThat is not a valid book to return");
+                            itemNotSelected = false;
+                        }
+                    } catch (Exception e) {
+                        printErrorMessage();
+                        displayItem(checkedOutItems);
                     }
-                } catch (Exception e) {
-                    printErrorMessage();
-                    displayItem(checkedOutItems);
                 }
             }
         }
@@ -234,11 +252,28 @@ public class BibliotecaApp {
 
     public static Boolean checkPassword(User user, String password) {
         if (user.getPassword().equals(password)) {
-            System.out.println(user.toString());
+            user.toString();
             return true;
         } else {
             System.out.println("Invalid Password");
             return false;
+        }
+    }
+
+
+    public static void viewCheckedOutItems() {
+        if (userLoggedIn == null) {
+            System.out.println("Please log in before you check out an item");
+        } else {
+            System.out.println("Checked Out Books: \n");
+            for (Item book : userLoggedIn.checkedOutBooks) {
+                System.out.println(book.toString() + "\n");
+            }
+
+            System.out.println("Checked Out Movies: \n");
+            for (Item book : userLoggedIn.checkedOutMovies) {
+                System.out.println(book.toString() + "\n");
+            }
         }
     }
 }
