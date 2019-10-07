@@ -69,7 +69,7 @@ public class BibliotecaApp {
                 checkoutItem(books, checkedOutBooks);
                 break;
             case 3:
-                returnBook();
+                returnItem(checkedOutBooks, books);
                 break;
             case 4:
                 displayItem(movies);
@@ -79,33 +79,6 @@ public class BibliotecaApp {
                 break;
             default:
                 printErrorMessage();
-        }
-    }
-
-    static void returnBook() {
-        displayItem(checkedOutBooks);
-        if (checkedOutBooks.size() > 0) {
-            System.out.println("Please select a number corresponding to the book you would like to return:");
-
-            boolean bookNotSelected = true;
-
-            while (bookNotSelected) {
-                Scanner input = new Scanner(System.in);
-                int bookOption;
-                try {
-                    bookOption = input.nextInt();
-                    if (validItemSelected(bookOption, checkedOutBooks, books)) {
-                        System.out.println("\nThank you for returning the book");
-                        bookNotSelected = false;
-                    } else {
-                        System.out.println("\nThat is not a valid book to return");
-                        bookNotSelected = false;
-                    }
-                } catch (Exception e) {
-                    printErrorMessage();
-                    displayItem(books);
-                }
-            }
         }
     }
 
@@ -129,10 +102,9 @@ public class BibliotecaApp {
                 i++;
             }
         }
-
     }
 
-    public static void checkoutItem(ArrayList<Item> items, ArrayList<Item> checkedOutItems) {
+    private static void checkoutItem(ArrayList<Item> items, ArrayList<Item> checkedOutItems) {
         displayItem(items);
         if (items.size() > 0){
             System.out.println("\nPlease type in a number to select the items you would like to check out: ");
@@ -159,7 +131,30 @@ public class BibliotecaApp {
         }
     }
 
-    public void returnItem() {
+    private static void returnItem(ArrayList<Item> checkedOutItems, ArrayList<Item> items) {
+        displayItem(checkedOutItems);
+        if (checkedOutItems.size() > 0) {
+            System.out.println("Please select a number corresponding to the book you would like to return:");
 
+            boolean itemNotSelected = true;
+
+            while (itemNotSelected) {
+                Scanner input = new Scanner(System.in);
+                int itemOption;
+                try {
+                    itemOption = input.nextInt();
+                    if (validItemSelected(itemOption, checkedOutItems, items)) {
+                        System.out.println("\nThank you for returning the book");
+                        itemNotSelected = false;
+                    } else {
+                        System.out.println("\nThat is not a valid book to return");
+                        itemNotSelected = false;
+                    }
+                } catch (Exception e) {
+                    printErrorMessage();
+                    displayItem(checkedOutItems);
+                }
+            }
+        }
     }
 }

@@ -62,7 +62,6 @@ public class BibliotecaAppTest {
         assertThat(byteArrayOutputStream.toString(), containsString("Endgame || Russo Brothers || 8.6 || 2019"));
     }
 
-
     @Test
     public void testMenuOptionsPrinted(){
         biblioteca.printMenuOptions();
@@ -88,6 +87,18 @@ public class BibliotecaAppTest {
     }
 
     @Test
+    public void testDisplayBooks() {
+        biblioteca.displayItem(books);
+        assertThat(byteArrayOutputStream.toString(), containsString("Harry Potter and the Chamber of Secrets || 1998 || JK Rowling"));
+    }
+
+    @Test
+    public void testDisplayMovies() {
+        biblioteca.displayItem(movies);
+        assertThat(byteArrayOutputStream.toString(), containsString("Endgame || Russo Brothers || 8.6 || 2019"));
+    }
+
+    @Test
     public void testBookRemoved() {
         int numOfBooks = books.size();
         biblioteca.validItemSelected(0, books, checkedOutBooks);
@@ -95,19 +106,19 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void testNegativeNumberForBookCheckOut() {
+    public void testNegativeNumberForItemCheckOut() {
         biblioteca.validItemSelected(-1, books, checkedOutBooks);
         assertFalse(false);
     }
 
     @Test
-    public void testHigherNumberOfBooksForCheckOut() {
+    public void testHigherNumberOfItemsForCheckOut() {
         biblioteca.validItemSelected(books.size()+1, books, checkedOutBooks);
         assertFalse(false);
     }
 
     @Test
-    public void testBookAdded() {
+    public void testItemAdded() {
         int numOfCheckedOutBooks = checkedOutBooks.size();
         biblioteca.validItemSelected(1, books, checkedOutBooks );
         assertThat(checkedOutBooks.size(), is(equalTo(numOfCheckedOutBooks+1)));
