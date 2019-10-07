@@ -80,8 +80,8 @@ public class User {
     @Override
     public String toString() {
         return "Name: " + name
-                + "Email: " + email
-                + "Phone number: " + phoneNumber;
+                + ", Email: " + email
+                + ", Phone number: " + phoneNumber;
     }
 
 

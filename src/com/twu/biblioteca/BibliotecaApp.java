@@ -11,6 +11,9 @@ public class BibliotecaApp {
     public static ArrayList<Item> movies = new ArrayList<Item>();
     public static ArrayList<Item> checkedOutMovies = new ArrayList<Item>();
 
+    public static ArrayList<User> users = new ArrayList<User>();
+    public static User userLoggedIn = null;
+
     public static void main(String[] args) {
         System.out.println("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!");
 
@@ -20,7 +23,9 @@ public class BibliotecaApp {
         menu.add("Return a book");
         menu.add("List of movies");
         menu.add("Check out a movie");
+        menu.add("Log in");
 
+        users.add(new User("123-4567", "John Doe", "jd@gmail.com", "12345678", "0000"));
 
         books.add(new Book("Harry Potter and the Chamber of Secrets", "JK Rowling",
                 "1998"));
@@ -77,10 +82,14 @@ public class BibliotecaApp {
             case 5:
                 checkoutItem(movies, checkedOutMovies);
                 break;
+            case 6:
+                logIn();
+                break;
             default:
                 printErrorMessage();
         }
     }
+
 
     static boolean validItemSelected(int itemOption, ArrayList<Item> listToRemoveFrom,
                                      ArrayList<Item> listToAddTo) {
@@ -155,6 +164,81 @@ public class BibliotecaApp {
                     displayItem(checkedOutItems);
                 }
             }
+        }
+    }
+
+    private static void logIn() {
+        String libraryNumber = getLibraryNumber();
+        if (!(libraryNumber.equals(""))) {
+            if (validLibraryNumber(libraryNumber)) {
+                userLoggedIn = findUserByLibraryNumber(libraryNumber);
+                if (userLoggedIn != null) {
+                    String password = getPassword();
+                    if (!(checkPassword(userLoggedIn, password))) {
+                        userLoggedIn = null;
+                    }
+                }
+            }
+        }
+    }
+
+    private static String getPassword() {
+        System.out.println("Please enter your password");
+        Scanner passwordInput = new Scanner(System.in);
+        String inputPassword;
+        try {
+            inputPassword = passwordInput.next();
+            return inputPassword;
+
+        } catch (Exception e) {
+            System.out.println("Invalid Password");
+            userLoggedIn = null;
+        }
+        return "";
+    }
+
+    public static String getLibraryNumber() {
+        System.out.println("Please enter your library number");
+
+        Scanner input = new Scanner(System.in);
+        String libraryNumber;
+
+        try {
+            libraryNumber = input.next();
+            return libraryNumber;
+        } catch (Exception e) {
+            System.out.println("That is not a valid library number");
+        }
+        return "";
+    }
+
+    public static Boolean validLibraryNumber(String libraryNumber) {
+        //https://stackoverflow.com/questions/18259644/how-to-check-if-a-string-matches-a-specific-format
+        if (libraryNumber.matches("\\d{3}-\\d{4}")) {
+            return true;
+        }
+        else {
+            System.out.println("That is not a valid library number");
+            return false;
+        }
+    }
+
+    public static User findUserByLibraryNumber(String libraryNumber) {
+        for (User user : users) {
+            if (user.getLibraryNumber().equals(libraryNumber)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public static Boolean checkPassword(User user, String password) {
+        if (user.getPassword().equals(password)) {
+            System.out.println(user.toString());
+            return true;
+        } else {
+            System.out.println("Invalid Password");
+            return false;
         }
     }
 }
