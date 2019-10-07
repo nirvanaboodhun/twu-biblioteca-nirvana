@@ -1,20 +1,24 @@
 package com.twu.biblioteca;
 
-public class Book {
-    String name;
+public class Book extends Item {
     String author;
-    String yearPublished;
 
-
-    public Book(String name, String author, String yearPublished) {
-        this.name = name;
+    public Book(String name, String year, String author) {
+        super(name, year);
         this.author = author;
-        this.yearPublished = yearPublished;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     @Override
     public String toString() {
-        return name + " || " + author + " || " + yearPublished;
+        return getName() + " || " + getAuthor() + " || " + getYear();
     }
 }
 
