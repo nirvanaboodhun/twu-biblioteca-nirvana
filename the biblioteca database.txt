@@ -1,0 +1,40 @@
+1. Who checked out the book 'The Hobbit’?
+
+select member_id from checkout_item where book_id = (select id from book where title = "The Hobbit");
+
+
+
+2. How many people have not checked out anything?
+
+select count(*) from member where id not in (select member_id from checkout_item);
+
+
+3. What books and movies aren't checked out?
+
+select title from book where id not in (select distinct(book_id) from checkout_item);
+select title from movie where id not in (select distinct(movie_id) from checkout_item);
+
+
+4. Add the book 'The Pragmatic Programmer', and add yourself as a member. Check out 'The Pragmatic Programmer'. Use your query from question 1 to verify that you have checked it out. Also, provide the SQL used to update the database.
+
+insert into book values (11, 'The Pragmatic Programmer');
+insert into member values (43, 'Nirvana Boodhun');
+insert into checkout_item values (43, 11,'');
+select member_id from checkout_item where book_id = (select id from book where title = "The Pragmatic Programmer");
+
+
+5. Who has checked out more than 1 item? 
+Tip: Research the GROUP BY syntax.
+
+select name 
+from member 
+where id in 
+	(select member_id 
+	from checkout_item 
+	group by member_id 
+	having count(member_id) = 
+		(select max(mycount) 
+		from (select member_id, count(member_id) mycount 
+			from checkout_item 
+			group by member_id)));
+
