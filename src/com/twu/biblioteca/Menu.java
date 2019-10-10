@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Menu {
     ArrayList<String> menu;
-    BookList bookList = new BookList();
-
+    ItemList bookList = new ItemList();
+    ItemList movieList = new ItemList();
 
     public Menu(ArrayList<String> menu) {
         this.menu = menu;
@@ -37,17 +37,20 @@ public class Menu {
                 System.exit(0);
                 break;
             case 1:
-                if (bookList.booksAvailable(bookList.booksInLibrary)) {
-                    bookList.display(bookList.booksInLibrary);
+                if (bookList.itemsAvailable(bookList.itemsInLibrary)) {
+                    bookList.display(bookList.itemsInLibrary);
                 } else {
                     System.out.println("Sorry, there are currently no books in the library");
                 }
                 break;
             case 2:
-                bookList.checkoutBook();
+                bookList.checkoutitem();
                 break;
             case 3:
-                bookList.returnBook();
+                bookList.returnItem();
+                break;
+            case 4:
+                movieList.display(movieList.itemsInLibrary);
                 break;
             default:
                 printErrorMessage();

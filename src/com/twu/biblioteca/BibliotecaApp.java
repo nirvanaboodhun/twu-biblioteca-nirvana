@@ -1,6 +1,5 @@
 package com.twu.biblioteca;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -13,9 +12,11 @@ public class BibliotecaApp {
 
         Menu menu = biblioteca.setUpMenu();
 
-        BookList bookList = biblioteca.setUpBookList();
-
+        ItemList bookList = biblioteca.setUpBookList();
         menu.bookList = bookList;
+
+        ItemList movieList = biblioteca.setUpMovieList();
+        menu.movieList = movieList;
 
         menu.printMenuOptions();
 
@@ -50,16 +51,25 @@ public class BibliotecaApp {
         menuOptions.add("List of books");
         menuOptions.add("Check out a book");
         menuOptions.add("Return a book");
+        menuOptions.add("List of movies");
         return new Menu(menuOptions);
     }
 
-    final BookList setUpBookList() {
-        ArrayList<Book> booksInLibrary = new ArrayList<Book>();
+    final ItemList setUpBookList() {
+        ArrayList<Item> booksInLibrary = new ArrayList<Item>();
         booksInLibrary.add(new Book("Harry Potter and the Chamber of Secrets", "JK Rowling",
                 "1998"));
         booksInLibrary.add(new Book("1984", "George Orwell", "1949"));
-        ArrayList<Book> checkedOutBooks = new ArrayList<Book>();
-       return new BookList(booksInLibrary, checkedOutBooks);
+        ArrayList<Item> checkedOutBooks = new ArrayList<Item>();
+       return new ItemList(booksInLibrary, checkedOutBooks);
+    }
+
+    final ItemList setUpMovieList() {
+        ArrayList<Item> moviesInLibrary = new ArrayList<Item>();
+        moviesInLibrary.add(new Movie("Endgame", "2019", "Russo Brothers", "8.6"));
+
+        ArrayList<Item> checkedOutMovies = new ArrayList<Item>();
+       return new ItemList(moviesInLibrary, checkedOutMovies);
     }
 
 
