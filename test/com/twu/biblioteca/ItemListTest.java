@@ -16,6 +16,7 @@ import static org.junit.Assert.assertThat;
 public class ItemListTest {
     private static ByteArrayOutputStream byteArrayOutputStream;
     private static ItemList bookList;
+    private static ItemList movieList;
 
     @Before
     public void setUp() {
@@ -31,12 +32,28 @@ public class ItemListTest {
         checkedOutBooks.add(new Book("A Game of Thrones", "GRRM", "1996"));
 
         bookList = new ItemList(booksInLibrary, checkedOutBooks);
+
+        ArrayList<Item> moviesInLibrary = new ArrayList<Item>();
+        ArrayList<Item> checkedOutMovies = new ArrayList<Item>();
+
+        moviesInLibrary.add(new Movie("Endgame", "2019", "Russo Brothers", "8.6"));
+        checkedOutMovies.add(new Movie("IT 2", "2019", "Andy Muschietti", "6.9"));
+
+        movieList = new ItemList(moviesInLibrary, checkedOutMovies);
+
+        UserList.userLoggedIn = new User("123-4567", "John Doe", "jd@gmail.com", "12345678", "0000");
     }
 
     @Test
     public void testListOfBooksPrinted() {
         bookList.display(bookList.itemsInLibrary);
         assertThat(byteArrayOutputStream.toString(), allOf(containsString("Harry Potter and the Chamber of Secrets"), containsString("1984")));
+    }
+
+    @Test
+    public void testListOfMoviesPrinted() {
+        movieList.display(movieList.itemsInLibrary);
+        assertThat(byteArrayOutputStream.toString(), containsString("Endgame || Russo Brothers || 8.6 || 2019"));
     }
 
     @Test
@@ -81,5 +98,14 @@ public class ItemListTest {
         int numOfCheckedOutBooks = bookList.checkedOutItems.size();
         bookList.moveItem(1, bookList.itemsInLibrary, bookList.checkedOutItems);
         assertThat(bookList.checkedOutItems.size(), is(equalTo(numOfCheckedOutBooks+1)));
+    }
+
+    @Test
+    public void testAddBookToUser() {
+        Book book = new Book("1984", "George Orwell", "1949");
+
+        bookList.addToUser(book);
+
+        assertThat(UserList.userLoggedIn.checkedOutBooks, hasItem(book));
     }
 }

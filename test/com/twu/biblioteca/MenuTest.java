@@ -1,11 +1,8 @@
 package com.twu.biblioteca;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
-import javax.annotation.processing.SupportedAnnotationTypes;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;

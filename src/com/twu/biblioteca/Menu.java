@@ -6,7 +6,7 @@ public class Menu {
     ArrayList<String> menu;
     ItemList bookList = new ItemList();
     ItemList movieList = new ItemList();
-
+    UserList userList = new UserList();
     public Menu(ArrayList<String> menu) {
         this.menu = menu;
     }
@@ -44,7 +44,11 @@ public class Menu {
                 }
                 break;
             case 2:
-                bookList.checkoutitem();
+                if (UserList.userLoggedIn != null) {
+                    bookList.checkoutItem();
+                } else {
+                    System.out.println("Please log in to check out a book");
+                }
                 break;
             case 3:
                 bookList.returnItem();
@@ -53,7 +57,10 @@ public class Menu {
                 movieList.display(movieList.itemsInLibrary);
                 break;
             case 5:
-                movieList.checkoutitem();
+                movieList.checkoutItem();
+                break;
+            case 6:
+                userList.logIn();
                 break;
             default:
                 printErrorMessage();

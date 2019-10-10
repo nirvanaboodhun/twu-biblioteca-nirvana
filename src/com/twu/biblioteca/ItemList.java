@@ -26,7 +26,7 @@ public class ItemList {
         }
     }
 
-    final void checkoutitem() {
+    final void checkoutItem() {
         if (itemsAvailable(itemsInLibrary)) {
             display(itemsInLibrary);
 
@@ -91,21 +91,26 @@ public class ItemList {
     }
 
     final boolean validItemSelected(int i, ArrayList<Item> items) {
-        if (i >= 0 && i < items.size()) {
-            return true;
-        } else return false;
+        return i >= 0 && i < items.size();
     }
 
     final void moveItem(int i, ArrayList<Item> listToRemoveFrom,
                         ArrayList<Item> listToAddTo) {
         Item selectedItem = listToRemoveFrom.get(i);
+        addToUser(selectedItem);
         listToRemoveFrom.remove(selectedItem);
         listToAddTo.add(selectedItem);
     }
 
+    final void addToUser(Item selectedItem) {
+        if (selectedItem instanceof Book) {
+            UserList.userLoggedIn.addToCheckedOutBooks(selectedItem);
+        } else {
+            UserList.userLoggedIn.addToCheckedOutMovies(selectedItem);
+        }
+    }
+
     final Boolean itemsAvailable(ArrayList<Item> items) {
-        if (items.size() > 0) {
-            return true;
-        } else return false;
+        return items.size() > 0;
     }
 }

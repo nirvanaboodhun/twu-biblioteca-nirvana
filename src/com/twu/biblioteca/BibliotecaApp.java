@@ -1,10 +1,10 @@
 package com.twu.biblioteca;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BibliotecaApp {
-
     public static void main(String[] args) {
 
         BibliotecaApp biblioteca = new BibliotecaApp();
@@ -17,6 +17,9 @@ public class BibliotecaApp {
 
         ItemList movieList = biblioteca.setUpMovieList();
         menu.movieList = movieList;
+
+        UserList userList = biblioteca.setUpUserList();
+        menu.userList = userList;
 
         menu.printMenuOptions();
 
@@ -53,6 +56,7 @@ public class BibliotecaApp {
         menuOptions.add("Return a book");
         menuOptions.add("List of movies");
         menuOptions.add("Check out a movie");
+        menuOptions.add("Log in");
         return new Menu(menuOptions);
     }
 
@@ -74,5 +78,11 @@ public class BibliotecaApp {
        return new ItemList(moviesInLibrary, checkedOutMovies);
     }
 
+    final UserList setUpUserList() {
+        ArrayList<User> users = new ArrayList<User>();
+        users.add(new User("123-4567", "John Doe", "jd@gmail.com", "12345678", "0000"));
+
+        return new UserList(users);
+    }
 
 }
