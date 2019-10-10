@@ -46,15 +46,12 @@ public class BookList {
     final void checkoutBook() {
         if (booksAvailable(booksInLibrary)) {
             display(booksInLibrary);
-            System.out.println("\nPlease type in a number to select the book you would like to check out: ");
 
             boolean bookNotSelected = true;
 
             while (bookNotSelected) {
-                Scanner input = new Scanner(System.in);
-                int bookOption;
-                try {
-                    bookOption = input.nextInt();
+                int bookOption = getBookSelected(new Scanner(System.in));
+                if (bookOption >= 0) {
                     if (validBookSelected(bookOption, booksInLibrary)) {
                         moveBook(bookOption, booksInLibrary, checkedOutBooks);
                         System.out.println("\nThank you! Enjoy the book!");
@@ -63,13 +60,21 @@ public class BookList {
                         System.out.println("\nSorry, that book is not available");
                         bookNotSelected = false;
                     }
-                } catch (Exception e) {
-                    printErrorMessage();
-                    display(booksInLibrary);
                 }
+                display(booksInLibrary);
             }
         } else {
             System.out.println("Sorry, there are no books available to check out");
+        }
+    }
+
+    final int getBookSelected(Scanner input) {
+        try {
+            System.out.println("\nPlease type in a number to select a book");
+            return input.nextInt();
+        } catch (Exception e) {
+            printErrorMessage();
+            return -1;
         }
     }
 
@@ -80,27 +85,22 @@ public class BookList {
     final void returnBook() {
         if (booksAvailable(checkedOutBooks)) {
             display(checkedOutBooks);
-            System.out.println("Please select a number corresponding to the book you would like to return:");
-
             boolean bookSelected = false;
 
             while (!(bookSelected)) {
-                Scanner input = new Scanner(System.in);
-                int bookOption;
-                try {
-                    bookOption = input.nextInt();
-                    if (validBookSelected(bookOption, checkedOutBooks)) {
-                        moveBook(bookOption, checkedOutBooks, booksInLibrary);
-                        System.out.println("\nThank you for returning the book");
-                        bookSelected = true;
-                    } else {
-                        System.out.println("\nThat is not a valid book to return");
-                        bookSelected = true;
+                int bookOption = getBookSelected(new Scanner(System.in));
+
+                    if (bookOption >= 0) {
+                        if (validBookSelected(bookOption, checkedOutBooks)) {
+                            moveBook(bookOption, checkedOutBooks, booksInLibrary);
+                            System.out.println("\nThank you for returning the book");
+                            bookSelected = true;
+                        } else {
+                            System.out.println("\nThat is not a valid book to return");
+                            bookSelected = true;
+                        }
                     }
-                } catch (Exception e) {
-                    printErrorMessage();
-                    display(booksInLibrary);
-                }
+                    display(checkedOutBooks);
             }
         } else {
             System.out.println("There are no books to return");

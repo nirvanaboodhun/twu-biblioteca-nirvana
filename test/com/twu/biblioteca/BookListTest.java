@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -43,6 +44,18 @@ public class BookListTest {
     public void testListOfBooksWithAuthorAndYearPublishedPrinted() {
         bookList.display(bookList.booksInLibrary);
         assertThat(byteArrayOutputStream.toString(), allOf(containsString("Harry Potter and the Chamber of Secrets || JK Rowling || 1998"), containsString("1984 || George Orwell || 1949")));
+    }
+
+    @Test
+    public void testAlphaCharForInput() {
+        int returnValue = bookList.getBookSelected(new Scanner("qwewer"));
+        assertThat(returnValue, is(equalTo(-1)));
+    }
+
+    @Test
+    public void testNumbersForInput() {
+        int returnValue = bookList.getBookSelected(new Scanner("8"));
+        assertThat(returnValue, is(equalTo(8)));
     }
 
     @Test
