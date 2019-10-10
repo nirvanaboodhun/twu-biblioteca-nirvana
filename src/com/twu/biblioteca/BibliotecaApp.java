@@ -57,6 +57,8 @@ public class BibliotecaApp {
         menuOptions.add("List of movies");
         menuOptions.add("Check out a movie");
         menuOptions.add("Log in");
+        menuOptions.add("View checked out items");
+
         return new Menu(menuOptions);
     }
 

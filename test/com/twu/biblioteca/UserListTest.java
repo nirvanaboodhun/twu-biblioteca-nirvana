@@ -55,14 +55,14 @@ public class UserListTest {
     @Test
     public void testCheckPassword() {
         User user = new User("123-4567", "John Doe", "jd@gmail.com", "12345678", "0000");
-        Boolean passwordCheck = UserList.validPassword(user, "0000");
+        Boolean passwordCheck = userList.validPassword(user, "0000");
         assertThat(passwordCheck, is(equalTo(true)));
     }
 
     @Test
     public void testInvalidPassword() {
         User user = new User("123-4567", "John Doe", "jd@gmail.com", "12345678", "0000");
-        Boolean passwordCheck = UserList.validPassword(user, "2222");
+        Boolean passwordCheck = userList.validPassword(user, "2222");
         assertThat(passwordCheck, is(equalTo(false)));
     }
 }

@@ -52,7 +52,7 @@ public class UserList {
         }
     }
 
-    Boolean validLibraryNumber(String libraryNumber) {
+    final Boolean validLibraryNumber(String libraryNumber) {
         //https://stackoverflow.com/questions/18259644/how-to-check-if-a-string-matches-a-specific-format
         if (libraryNumber.matches("\\d{3}-\\d{4}")) {
             return true;
@@ -63,7 +63,7 @@ public class UserList {
         }
     }
 
-    User findUserByLibraryNumber(String libraryNumber) {
+    final User findUserByLibraryNumber(String libraryNumber) {
         for (User user : users) {
             if (user.getLibraryNumber().equals(libraryNumber)) {
                 return user;
@@ -72,13 +72,25 @@ public class UserList {
         return null;
     }
 
-    static Boolean validPassword(User user, String password) {
+    final Boolean validPassword(User user, String password) {
         if (user.getPassword().equals(password)) {
             user.toString();
             return true;
         } else {
             System.out.println("Invalid Password");
             return false;
+        }
+    }
+
+    final void viewCheckedOutItems() {
+        System.out.println("Checked Out Books: \n");
+        for (Item book : userLoggedIn.checkedOutBooks) {
+            System.out.println(book.toString() + "\n");
+        }
+
+        System.out.println("Checked Out Movies: \n");
+        for (Item book : userLoggedIn.checkedOutMovies) {
+            System.out.println(book.toString() + "\n");
         }
     }
 }

@@ -62,6 +62,9 @@ public class Menu {
             case 6:
                 userList.logIn();
                 break;
+            case 7:
+                userList.viewCheckedOutItems();
+                break;
             default:
                 printErrorMessage();
         }
