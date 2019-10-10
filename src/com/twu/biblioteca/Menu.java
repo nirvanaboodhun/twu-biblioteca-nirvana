@@ -52,6 +52,9 @@ public class Menu {
             case 4:
                 movieList.display(movieList.itemsInLibrary);
                 break;
+            case 5:
+                movieList.checkoutitem();
+                break;
             default:
                 printErrorMessage();
         }

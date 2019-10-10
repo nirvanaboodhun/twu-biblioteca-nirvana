@@ -52,6 +52,7 @@ public class BibliotecaApp {
         menuOptions.add("Check out a book");
         menuOptions.add("Return a book");
         menuOptions.add("List of movies");
+        menuOptions.add("Check out a movie");
         return new Menu(menuOptions);
     }
 
@@ -67,6 +68,7 @@ public class BibliotecaApp {
     final ItemList setUpMovieList() {
         ArrayList<Item> moviesInLibrary = new ArrayList<Item>();
         moviesInLibrary.add(new Movie("Endgame", "2019", "Russo Brothers", "8.6"));
+        moviesInLibrary.add(new Movie("IT 2", "2019", "Andy Muschietti", "6.9"));
 
         ArrayList<Item> checkedOutMovies = new ArrayList<Item>();
        return new ItemList(moviesInLibrary, checkedOutMovies);
