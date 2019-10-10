@@ -3,7 +3,7 @@ package com.twu.biblioteca;
 import java.util.ArrayList;
 
 public class Menu {
-    ArrayList<String> menu = new ArrayList<String>();
+    ArrayList<String> menu;
     BookList bookList = new BookList();
 
 
@@ -37,7 +37,11 @@ public class Menu {
                 System.exit(0);
                 break;
             case 1:
-                bookList.display(bookList.booksInLibrary);
+                if (bookList.booksAvailable(bookList.booksInLibrary)) {
+                    bookList.display(bookList.booksInLibrary);
+                } else {
+                    System.out.println("Sorry, there are currently no books in the library");
+                }
                 break;
             case 2:
                 bookList.checkoutBook();

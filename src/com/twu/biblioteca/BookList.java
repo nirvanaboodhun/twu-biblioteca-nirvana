@@ -1,5 +1,7 @@
 package com.twu.biblioteca;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -35,19 +37,15 @@ public class BookList {
 
     final void display(ArrayList<Book> books) {
         int i = 0;
-        if (books.size() == 0) {
-            System.out.println("Sorry, there are currently no books to choose from");
-        } else {
-            for (Book book : books) {
-                System.out.println(i + ": " + book.toString());
-                i++;
-            }
+        for (Book book : books) {
+            System.out.println(i + ": " + book.toString());
+            i++;
         }
     }
 
     final void checkoutBook() {
-        display(booksInLibrary);
-        if (booksInLibrary.size() > 0){
+        if (booksAvailable(booksInLibrary)) {
+            display(booksInLibrary);
             System.out.println("\nPlease type in a number to select the book you would like to check out: ");
 
             boolean bookNotSelected = true;
@@ -70,6 +68,8 @@ public class BookList {
                     display(booksInLibrary);
                 }
             }
+        } else {
+            System.out.println("Sorry, there are no books available to check out");
         }
     }
 
@@ -78,8 +78,8 @@ public class BookList {
     }
 
     final void returnBook() {
-        display(checkedOutBooks);
-        if (checkedOutBooks.size() > 0) {
+        if (booksAvailable(checkedOutBooks)) {
+            display(checkedOutBooks);
             System.out.println("Please select a number corresponding to the book you would like to return:");
 
             boolean bookSelected = false;
@@ -102,6 +102,8 @@ public class BookList {
                     display(booksInLibrary);
                 }
             }
+        } else {
+            System.out.println("There are no books to return");
         }
     }
 
@@ -118,4 +120,9 @@ public class BookList {
         listToAddTo.add(selectedBook);
     }
 
+    final Boolean booksAvailable(ArrayList<Book> books) {
+        if (books.size() > 0) {
+            return true;
+        } else return false;
+    }
 }

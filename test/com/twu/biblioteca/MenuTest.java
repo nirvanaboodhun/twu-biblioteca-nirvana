@@ -1,13 +1,15 @@
 package com.twu.biblioteca;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
+import javax.annotation.processing.SupportedAnnotationTypes;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 
-import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertThat;
 
@@ -39,5 +41,12 @@ public class MenuTest {
     public void testNegativeNumbersForMenuOption() {
         menu.parseInput(-1);
         assertThat(byteArrayOutputStream.toString(), containsString("Please select a valid option:"));
+    }
+
+    @Test
+    public void testOutOfRangeNumberForMenuOption() {
+        menu.parseInput(10);
+        assertThat(byteArrayOutputStream.toString(), containsString("Please select a valid option:"));
+
     }
 }
